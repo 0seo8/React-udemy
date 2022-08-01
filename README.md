@@ -248,3 +248,54 @@ function AddUser(props) {
 이제 AddUser 컴포넌트에서 submit이벤트가 발생하는 경우 `addUserHandler`핸들러에 의해 App.js에 정의된 `addUserHandler` 가 실행되게 됩니다. (즉, 현재 사용자정보가 추가되게 됩니다.)
 
 ![](https://velog.velcdn.com/images/0seo8/post/3816a0fe-b986-470d-9a60-3d798078ca20/image.png)
+
+3. 유니크한 아이디 전달하기
+   ![](https://velog.velcdn.com/images/0seo8/post/c0ea6d0e-1dfa-4cc4-8efa-1e6424c685d1/image.png)
+
+### step8 : Error Modal컴포넌트 만들기
+
+1. 에러모달컴포넌트를 어느 컴포넌트에서 출력을 할 것인지가 논쟁거리가 될 수 있습니다.
+
+- 우리는 AddUser컴포넌트에서 사용합니다.
+
+2. AddUser에서 적용
+
+```jsx
+return (
+  <>
+    <ErrorModal title="An error occured!" message="Someting went wrong!" />
+    <Card className={style.input}>...</Card>
+  </>
+)
+```
+
+3. 문제 발생
+   ![](https://velog.velcdn.com/images/0seo8/post/83b9d1f6-fe60-43ae-9d79-1a8a17e7c147/image.png)
+
+모달창이 정상적으로 출력되었습니다. 그런데 지금은 모달창 아래의 input창에 작성이 가능합니다. 즉, 나머지 페이지와 상호작용이 되는 상태입니다.
+
+문제해결 : 다른 컴포넌트와의 상호작용막기
+
+```jsx
+function ErrorModal(props) {
+  return (
+    <div> ✅
+      <div /> ✅
+      <Card className={style.modal}>
+        <header className={style.header}>
+          <h2>{props.title}</h2>
+        </header>
+        <div className={style.content}>
+          <p>{props.message}</p>
+        </div>
+        <footer className={style.actions}>
+          <Button>Okay</Button>
+        </footer>
+      </Card>
+    </div> ✅
+  )
+}
+```
+
+- Card컴포넌트와 형제요소로 닫힌 div태그를 만들어줍니다.
+  ![](https://velog.velcdn.com/images/0seo8/post/be3a11fe-8379-4f89-94fd-b9137923f6f4/image.png)
