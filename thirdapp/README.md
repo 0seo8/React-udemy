@@ -31,7 +31,7 @@ useEffect(() => {
 
 > useReducer의 경우 관리하는 state가 많아질 때 useState대신 사용을 할 수 있습니다.
 
-**step1**
+### step1 useReducer를 언제 사용하나요
 
 ```jsx
 const Login = (props) => {
@@ -51,3 +51,64 @@ const Login = (props) => {
 - 이런 경우 useReducer를 사용할 수 있습니다.
   즉, 다른 state를 기반으로 하는 로직을 작성하는 경우에는 useReducer를 사용하는 것을 권장합니다.
   (물론, useReducer 없이 하나의 state로 병합할 수 있습니다.)
+
+### 2. step2 useReducer의 단계
+
+```jsx
+const [state, dispatchFn] = useReducer(reducerFn, initalState, initFn)
+```
+
+- `state`: 최신 스냅샷
+- `dispatchFn` : 함수를 통해 스냅샷을 업데이트
+- `reducerFn` : `dispatchFn`에서 사용되는 reducer함수
+  - 새로운 업데이트를 반환합니다.
+  - reducerFn을 따로 빼서 작성하는 경우 컴포넌트 함수 외부에서 작성을 해야합니다.
+  - reducerFn(state, action) state,action두가지 인수를 받을 수 있습니다.
+- `initialState` : 초기 state나 함수를 설정할 수 있습니다.
+- `initFn`: 초기 state를 설정하기 위해 실행되어야하는 함수
+
+* PLUS
+
+-
+
+### stpe3 값과 유효성을 하나의 state로 결합해 useReducer로 관리
+
+> ✅useReducer()의 첫번째 인자로 작성될 함수를 따로 빼서 작성할 수도 있습니다. **단, 컴포넌트 함수외부에서 작성되어야합니다.**
+>
+> - 리듀서함수의 경우 다른 데이터와 상호작용을 할 필요가 없기 때문입니다. (컴포넌트 내부에서 만들어진 함수는 어떤 데이터도 필요로하지 않습니다.)
+
+`작성예시`
+
+```jsx
+import React, { useState, useReducer } from 'react'
+
+const emailReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return { value: action.val, isValid: action.val.includes('@') }
+  }
+
+  if (action.type === 'USER_BLUR') {
+    return { value: state.value, isValid: state.val.includes('@') }
+  }
+
+  return { value: '', isValid: false }
+}
+
+const Login = (props) => {
+  const [eamilState, dispatchEmail] = useReducer(emailReducer)
+
+  const emailChangeHandler = (event) => {
+    dispatchEmail({ type: 'USER_INPUT', val: event.target.value })
+
+    setFormIsValid(
+      event.target.value.includes('@') && enteredPassword.trim().length > 6,
+    )
+  }
+
+  const validateEmailHandler = () => {
+    dispatchEmail({ type: 'INPUT_BLUR' })
+  }
+
+  return <></>
+}
+```
