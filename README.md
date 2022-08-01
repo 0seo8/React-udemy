@@ -299,3 +299,89 @@ function ErrorModal(props) {
 
 - Card컴포넌트와 형제요소로 닫힌 div태그를 만들어줍니다.
   ![](https://velog.velcdn.com/images/0seo8/post/be3a11fe-8379-4f89-94fd-b9137923f6f4/image.png)
+
+### step9
+
+목표: 유효하지 않은 경우에만 모달컴포넌트 띄우기
+
+1.
+
+```jsx
+function AddUser(props) {
+...
+  const [error, setError] = useState()
+
+  const addUserHandler = (e) => {
+    e.preventDefault()
+    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).',
+      })
+      return
+    }
+    if (+enteredAge < 1) {
+      setError({
+        title: 'Invalid age',
+        message: 'Please enter a valid age (>0).',
+      })
+      return
+    }
+...
+  }
+
+
+  return (
+    <>
+      {error && <ErrorModal title={error.title} message={error.message} />}
+      <Card className={style.input}>
+        ...
+      </Card>
+    </>
+  )
+}
+```
+
+- error title과 message가 들어있는 객체를 다룰 useState생성
+- 유효성 검사에 추가
+- return {}에서 표현식으로 error가 있는 경우만 출력
+
+2. error state를 초기화해주는 함수 만들기
+
+```jsx
+//AddUser.js
+const errorHandler = () => {
+  setError(null)
+}
+
+return (
+<>
+  {error && (
+    <ErrorModal
+      title={error.title}
+      message={error.message}
+      onConfirm={errorHandler}
+    />
+  }
+    ...
+  )
+```
+
+AddUSer 컴포넌트 내에서 만든 에러핸들러는 ErrorModal컴포넌트에서 다룰 수 있습니다.
+(backdrop과 okay버튼을 ErrorModal컴포넌트에서 가지고 있기 때문입니다.)
+
+```jsx
+function ErrorModal(props) {
+  return (
+    <div>
+      <div className={style.backdrop} onClick={props.onConfirm} />✅
+      <Card className={style.modal}>
+        ...
+        <footer className={style.actions}>
+          <Button onClick={props.onConfirm}>Okay</Button>✅
+        </footer>
+      </Card>
+    </div>
+  )
+}
+```
