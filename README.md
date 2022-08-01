@@ -97,3 +97,38 @@ return <Button type="submit">Add User</Button>
 - useState를 이용한 onChange이벤트 설정
 
 ### step5
+
+목표: 검증 추가 로직 생성하기
+
+1. input 초기화
+
+```jsx
+const addUserHandler = (e) => {
+  e.preventDefault()
+  setEnteredUsername('')
+  setEnteredAge('')
+}
+```
+
+위와 같이 작성을 한 후 확인을 해보면 예상과 달리 input값이 초기화되지 않습니다.
+⭐사실 input값이 초기화되었지만 현재 상태가 반영되고 있지 않은 것입니다.
+
+> 초기화 된 값을 다시 input에 전달하기 (value사용)
+
+- value값을 사용하면 키 입력으로 변경되는 경우 뿐만 아니라 폼을 제출하는 경우에도 반응성을 가지게됩니다.
+
+2. 유효성검사
+   목표: input값이 공백이거나 age가 0보다 작은 경우는 제출이 안되게 설정
+
+```jsx
+const addUserHandler = (e) => {
+  e.preventDefault()
+  if (enteredUsername.trim().length === 0 || enteredAge.trim.length === 0)
+    return
+  if (+enteredAge < 1) return
+  setEnteredUsername('')
+  setEnteredAge('')
+}
+```
+
+주의점: enteredAge의 경우 useState('')을 통해 문자열로 초기화했기 때문에 문자열을 갖습니다. 따라서 if조건문 사용지 +를 붙여 숫자형으로 변환한 후 비교를 해줘야합니다.
