@@ -69,7 +69,7 @@ const [state, dispatchFn] = useReducer(reducerFn, initalState, initFn)
 
 ### stpe3 값과 유효성을 하나의 state로 결합해 useReducer로 관리
 
-> ✅useReducer()의 첫번째 인자로 작성될 함수를 따로 빼서 작성할 수도 있습니다. **단, 컴포넌트 함수외부에서 작성되어야합니다.**
+> ✅useReducer()의 첫번째 인자로 작성될 함수를 따로 빼서 작성할 수도 있습니다. \**단, 컴포넌트 함수외부에서 작성되어야합니다.*gi\*
 >
 > - 리듀서함수의 경우 다른 데이터와 상호작용을 할 필요가 없기 때문입니다. (컴포넌트 내부에서 만들어진 함수는 어떤 데이터도 필요로하지 않습니다.)
 
@@ -272,3 +272,56 @@ const Login = (props) => {
   )
 }
 ```
+
+### step4 useReducer & useEffect
+
+현재 `const [formIsValid, setFormIsValid] = useState(false);`에서 따로 유효성검사를 하고 있기 때문에 최적화된 코드는 아닙니다. 이를 수정해도록 하겠습니다.
+
+```jsx
+useEffect(() => {
+  const identifier = setTimeout(() => {
+    console.log('Checking form validity!')
+    setFormIsValid(emailState.isValid && passwordState.isValid)
+  }, 500)
+
+  return () => {
+    console.log('CLEANUP')
+    clearTimeout(identifier)
+  }
+}, [emailState, passwordState])
+
+const emailChangeHandler = (event) => {
+  dispatchEmail({ type: 'USER_INPUT', val: event.target.value })
+
+  // setFormIsValid(event.target.valu.includes('@') && passwordState.isValid)
+}
+
+const passwordChangeHandler = (event) => {
+  dispatchPassword({ type: 'USER_INPUT', val: event.target.value })
+
+  // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6)
+}
+```
+
+그런데 문제점이 있습니다. useEffect가 emailState, passwordState 값이 변할떄마다 실행되며 너무 잦은 실행이 되고 있다는 점입니다.
+
+**해결방법**
+
+```jsx
+const { isValid: emailIsValid } = emailState
+const { isValid: passwordValid } = passwordState
+
+useEffect(() => {
+  const identifier = setTimeout(() => {
+    console.log('Checking form validity!')
+    setFormIsValid(emailIsValid && passwordValid)
+  }, 500)
+
+  return () => {
+    console.log('CLEANUP')
+    clearTimeout(identifier)
+  }
+}, [emailIsValid, passwordValid])
+```
+
+객체구조분해를 통해 사용할 isValid만 꺼내와 사용을 할 수 있습니다. 이제는 값만 변경되고 유효성검사는 변경되지 않는다면 useEffect은 실행되지 않습니다.
