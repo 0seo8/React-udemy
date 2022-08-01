@@ -132,3 +132,63 @@ const addUserHandler = (e) => {
 ```
 
 주의점: enteredAge의 경우 useState('')을 통해 문자열로 초기화했기 때문에 문자열을 갖습니다. 따라서 if조건문 사용지 +를 붙여 숫자형으로 변환한 후 비교를 해줘야합니다.
+
+### setp6
+
+목표: 사용자목록
+
+- userList의 값을 가져오는 로직과 출력하는 로직으로 구분된 두가지 컴포넌트가 필요합니다.
+- UserList : 출력담당
+
+1. UserList에 props로 users리스트에 대한 정보를 받아 출력하는 로직 작성
+
+```jsx
+function UserList(props) {
+  return (
+    <ul>
+      {props.users.map((user) => (
+        <li>
+          {user.name} ({user.age} years old)
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+1-1 Card컴포넌트 사용 복습
+
+```jsx
+function UserList(props) {
+  return (
+    <Card className={style.users}>
+      <ul>
+        {props.users.map((user) => (
+          <li>
+            {user.name} ({user.age} years old)
+          </li>
+        ))}
+      </ul>
+    </Card>
+  )
+}
+```
+
+- 위와 같이 userList에 정의된 스타일을 style.users로 내려보내줘야합니다.
+
+2. UserList를 어디서 출력할 것인지를 결정.
+
+```jsx
+function App() {
+  return (
+    <div>
+      <AddUser />
+      <UserList />
+    </div>
+  )
+}
+```
+
+- App.js에 USerList출력을 해보면 에러가 확인되는 것을 알 수 있습니다.(map이 undefined)
+  - props.users 속성을 설정하고 있지 않기 떄문입니다.
+  - ⭐`<UserList user={[]} />` 과 같이 user에 빈배열을 할당해 undefined가 되지 않도록 설정해줘야합니다.
