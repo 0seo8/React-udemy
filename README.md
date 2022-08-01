@@ -392,9 +392,8 @@ function ErrorModal(props) {
 
 ### step1
 
-핵심 주제
-
-- jsx에서의 최상위 태그가 1개가 되어야하는 점을 해결하기 위한 wrapper컴포넌트
+> 핵심 주제
+> jsx에서의 최상위 태그가 1개가 되어야하는 점을 해결하기 위한 wrapper컴포넌트
 
 ```jsx
 const Wrapper = (props) => {
@@ -405,3 +404,31 @@ export default Wrapper
 ```
 
 - 기본적으로 빈 컴포넌트로 여는태그와 닫는 태그 사이에 있는 내용을 반환합니다.
+
+### step3
+
+> React.Fragment
+
+- 직접 Wrapper객체를 만들지 않아도 React에서 제공하는 플래그먼트 컴포넌트 입니다.
+
+**사용방법**
+
+```jsx
+return (
+  <React.Fragment>
+    <h2>Hi there!</h2>
+    <p>This does no work!</p>
+  </React.Fragment>
+)
+```
+
+or
+
+```jsx
+return (
+  <>
+    <h2>Hi there!</h2>
+    <p>This does no work!</p>
+  </>
+)
+```
