@@ -388,7 +388,7 @@ function ErrorModal(props) {
 
 ---
 
-## Second-app
+## Second-app 깔끔한 코드 작성하기
 
 ### step1
 
@@ -558,3 +558,35 @@ function ErrorModal(props) {
 ![](https://velog.velcdn.com/images/0seo8/post/f651eb09-1a7e-4587-80f9-812b3bf39c34/image.png)
 
 렌더링되어야하는 위치들에 잘 들어가있는 것을 확인할 수 있습니다.
+
+### step4: useRef
+
+ref는 다른 DOM 요소에 접근해서 그것들로 작업할 수 있게 해줍니다.
+
+현재 프로젝트에서의 input값은 state를 통해 관리되고 있습니다. 그런데 사실은 폼을 제출할때만 필요할 뿐인데 키를 입력할 때마다 state를 업데이트 한다는 점이 아쉽습니다.
+
+이런 경우 ref를 사용할 수 있습니다.
+
+1. ref를 사용하기 위해서는 useRef 훅이 필요합니다.
+
+```jsx
+const React, {useRef} from 'react'
+
+function AddUser(props) {
+  const nameInputRef = useRef()
+  const ageInputRef = useRef()
+
+  return(
+    <input ref={nameInputRef} />
+    <input ref={ageInputRef} type="number"/>
+  )
+}
+```
+
+이렇게 생성한 ref의 current속성을 확인해보면 실제 DOM노드가 들어있는 것을 확인할 수 있습니다.
+
+따라서 input의 값을 읽을 때 e.target.value가 아니라 생성ref.current.value로 접근할 수가 있습니다.
+
+ref를 이용하면 state 및 그로인한 이벤트 핸들러를 관리하지 않아도 되기 때문에 코드가 훨씬 간결해집니다.
+
+**실제로 DOM을 조작하기 위해 ref를 사용하는 것은 매우 드뭅니다.**
