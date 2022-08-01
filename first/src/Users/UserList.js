@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from '../UI/Card'
-import style from './AddUser.module.css'
+import style from './UserList.module.css'
 
 function UserList(props) {
   return (

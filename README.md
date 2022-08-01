@@ -3,7 +3,7 @@
 udemy강의를 들으면서 잊지 않도록 기록해놓는 레포지토리 입니다.
 각 커밋 기록에 맞춰 복습이 필요하거나 중점으로 두고 공부를 해야하는 부분에 대한 내용이 현재 파일에 기록되어 있습니다.
 
-## first-app
+## 1. first-app
 
 ### step1
 
@@ -192,3 +192,59 @@ function App() {
 - App.js에 USerList출력을 해보면 에러가 확인되는 것을 알 수 있습니다.(map이 undefined)
   - props.users 속성을 설정하고 있지 않기 떄문입니다.
   - ⭐`<UserList user={[]} />` 과 같이 user에 빈배열을 할당해 undefined가 되지 않도록 설정해줘야합니다.
+
+### step 7 : state 끌어올리기 ✅반복복습필요
+
+목표: Adduser에서 버튼 클릭시 새로운 user객체를 생성해 그 배열에 값을 추가한 후 userList에서 출력되게 만들기
+
+1. state끌어올리기
+
+- Adduser컴포넌트와 UserList 컴포넌트 모두 접근이 가능해야합니다.
+- 따라서 UserList에서 user관련 state를 다루기 보다는 두컴포넌트에서 모두 접근 가능하도록 그 상위인 App.js에서 다루는 것이 효율적입니다.
+
+```jsx
+function App() {
+  const [userList, setUserList] = userState([])
+
+  return (
+    <div>
+      <AddUser onAddUser={} />
+      <UserList users={userList} />
+    </div>
+  )
+}
+```
+
+2. AddUser로 전달할 이벤트 핸들러 만들기
+
+```jsx
+function App() {
+  const addUserHandler = (uName, uAge) => {
+    setUserList((prevUeerList) => {
+      return [...prevUeerList, { name: uName, age: uAge }]
+    })
+  }
+
+  return (
+    <div>
+      <AddUser onAddUser={addUserHandler} />
+    </div>
+  )
+}
+```
+
+```jsx
+function AddUser(props) {
+  const addUserHandler = (e) => {
+    e.preventDefault()
+    ...
+    props.onAdUser(enteredUsername, enteredAge) ✅
+    ...
+  }
+...
+}
+```
+
+이제 AddUser 컴포넌트에서 submit이벤트가 발생하는 경우 `addUserHandler`핸들러에 의해 App.js에 정의된 `addUserHandler` 가 실행되게 됩니다. (즉, 현재 사용자정보가 추가되게 됩니다.)
+
+![](https://velog.velcdn.com/images/0seo8/post/3816a0fe-b986-470d-9a60-3d798078ca20/image.png)
