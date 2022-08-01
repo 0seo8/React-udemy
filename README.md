@@ -59,3 +59,35 @@ function Card(props) {
   - 단, className말고 다른 이름을 사용하는 경우 AddCard.js에서도 사용하고자하는이름={}으로 스타일을 적용시켜야합니다.
 
 ![](https://velog.velcdn.com/images/0seo8/post/cb170208-75b3-425e-93d6-0fe10dc975bc/image.png)
+
+### step3
+
+목표: 버튼 컴포넌트 만들기(props로 type과 onClick핸들러를 받아 적용)
+
+1. props로 type적용
+
+```jsx
+function Button(props) {
+  return (
+    <button
+      className={style.button}
+      type={props.type || 'button'}
+      onCick={props.onClick}
+    >
+      {props.children}
+    </button>
+  )
+}
+```
+
+`type={}`을 통해 Button이 적용될 컴포넌트에서 타입을 받아오되, `|| 'button'`을 통해 기본 default값을 설정해줍니다.
+
+2. 사용
+
+```jsx
+import Button from '../UI/Button'
+
+return <Button type="submit">Add User</Button>
+```
+
+![](https://velog.velcdn.com/images/0seo8/post/19eb5c5d-7f0f-452f-bb03-7c8f8ff78df3/image.png)
