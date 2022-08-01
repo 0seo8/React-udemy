@@ -432,3 +432,17 @@ return (
   </>
 )
 ```
+
+**step3**
+
+> React Potals
+
+현재 프로젝트의 모달 컴포넌트의 경우 기술적으로 작동을 하더라도 스타일링이나 접근성 관점에서 좋은 코드 및 좋은 구조는 아닙니다.
+
+이럴 때 리액트 포털을 이용할 수 있습니다.
+
+`포털 사용전`
+![](https://velog.velcdn.com/images/0seo8/post/71607e82-66c1-4e90-b390-841b8828c831/image.png)
+
+`포털 사용`
+![](https://velog.velcdn.com/images/0seo8/post/c15a64c5-974c-48d3-a1e5-4591aff318b8/image.png)
