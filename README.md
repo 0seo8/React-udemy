@@ -446,3 +446,115 @@ return (
 
 `포털 사용`
 ![](https://velog.velcdn.com/images/0seo8/post/c15a64c5-974c-48d3-a1e5-4591aff318b8/image.png)
+
+**step4**
+
+> potals사용방법
+
+- 컴포넌트를 이동시킬 장소와 그곳에 포털을 가져야한다고 알려줄 코드가 필요합니다.
+
+1. public 폴더 내의 index.html에서 potals가 출력될 위치를 잡아줍니다.
+
+```html
+<body>
+  <div id="backdrop-root"></div>
+  <div id="overlay-root"></div>
+  <div id="root"></div>
+</body>
+```
+
+위와 같이 루트를 여러개 만들어 각각 다른 종류의 컴포넌트들이 포털되게 할 수 있습니다.
+
+또한 backdrop-root 아래에 modal-root를 쓰면 모든 조ㄹㅇ류으 오버레이나 모달, 사이드 드로어를 가져올 수 있습니다.
+
+2. ErrorModal에 적용
+
+2-1. 먼저 ErrorModal이라는 컴포넌트를 두개로 나눠줍니다.
+
+`변경전`
+
+```jsx
+function ErrorModal(props) {
+  return (
+    <div>
+      <div className={style.backdrop} onClick={props.onConfirm} />
+      <Card className={style.modal}>
+        <header className={style.header}>
+          <h2>{props.title}</h2>
+        </header>
+        <div className={style.content}>
+          <p>{props.message}</p>
+        </div>
+        <footer className={style.actions}>
+          <Button onClick={props.onConfirm}>Okay</Button>
+        </footer>
+      </Card>
+    </div>
+  )
+}
+```
+
+`변경 후`
+
+```jsx
+const Backdrop = (props) => {
+  return <div className={style.backdrop} onClick={props.onConfirm} />
+}
+
+const ModalOverlay = (props) => {
+  return (
+    <Card className={style.modal}>
+      <header className={style.header}>
+        <h2>{props.title}</h2>
+      </header>
+      <div className={style.content}>
+        <p>{props.message}</p>
+      </div>
+      <footer className={style.actions}>
+        <Button onClick={props.onConfirm}>Okay</Button>
+      </footer>
+    </Card>
+  )
+}
+
+function ErrorModal(props) {
+  return <React.Fragment>{}</React.Fragment>
+}
+```
+
+2-2. Fragment내부에 표현식을 이용해 만든 컴포넌트를 적용
+
+```jsx
+import ReactDOM from 'react-dom'
+
+function ErrorModal(props) {
+  return <React.Fragment>{ReactDOM.createPortal()}</React.Fragment>
+}
+```
+
+**createPortal(렌더링되어야하는 노드를 JSX형식으로, 실제로 렌더링되어야 하는 컴포넌트 )**
+
+```jsx
+function ErrorModal(props) {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Backdrop onClick={props.onConfirm} />,
+        document.getElementById('backdrop-root'),
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay
+          titl={props.title}
+          message={props.message}
+          onConfirm={props.onConfirm}
+        />,
+        document.getElementById('overlay-root'),
+      )}
+    </React.Fragment>
+  )
+}
+```
+
+![](https://velog.velcdn.com/images/0seo8/post/f651eb09-1a7e-4587-80f9-812b3bf39c34/image.png)
+
+렌더링되어야하는 위치들에 잘 들어가있는 것을 확인할 수 있습니다.
