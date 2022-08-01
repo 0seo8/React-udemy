@@ -325,3 +325,12 @@ useEffect(() => {
 ```
 
 객체구조분해를 통해 사용할 isValid만 꺼내와 사용을 할 수 있습니다. 이제는 값만 변경되고 유효성검사는 변경되지 않는다면 useEffect은 실행되지 않습니다.
+
+> 핵심정리
+
+- destructuring을 사용한다는 것이 아니라, 전체 개체 대신 특정 속성을 종속성으로 전달한다는 것
+
+### step5 useState vs useReducer
+
+useState: 간단한 state / state의 업데이트가 쉽고 state가 몇종류 안되는 경우
+useReducer: 복잡한 로직을 통해 state를 업데이트해야하는경우, 연관된 state 조각을 다루는 경우
