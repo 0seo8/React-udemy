@@ -26,3 +26,28 @@ useEffect(() => {
 ```
 
 만약, 사용자가 다시 타이핑을 시작하는 경우 이전 timer는 지워줍니다.
+
+## useReducer
+
+> useReducer의 경우 관리하는 state가 많아질 때 useState대신 사용을 할 수 있습니다.
+
+**step1**
+
+```jsx
+const Login = (props) => {
+  const [enteredEmail, setEnteredEmail] = useState('')
+  const [emailIsValid, setEmailIsValid] = useState()
+...
+  const validateEmailHandler = () => {
+    setEmailIsValid(enteredEmail.includes('@'))
+  }
+...
+}
+```
+
+`validateEmailHandler`함수의 사용은 잘 못되고 있습니다.
+
+- 각각의 enteredEamil, emailIsValid는 다른 state로 만약 위와 같이 사용을 한다면 enterEmail에 대한 어떤 state의 업데이트가 늦게 되며 예상과 다른 결과가 나올 수도 있기 때문입니다.
+- 이런 경우 useReducer를 사용할 수 있습니다.
+  즉, 다른 state를 기반으로 하는 로직을 작성하는 경우에는 useReducer를 사용하는 것을 권장합니다.
+  (물론, useReducer 없이 하나의 state로 병합할 수 있습니다.)
