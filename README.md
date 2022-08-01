@@ -385,3 +385,23 @@ function ErrorModal(props) {
   )
 }
 ```
+
+---
+
+## Second-app
+
+### step1
+
+핵심 주제
+
+- jsx에서의 최상위 태그가 1개가 되어야하는 점을 해결하기 위한 wrapper컴포넌트
+
+```jsx
+const Wrapper = (props) => {
+  return props.children
+}
+
+export default Wrapper
+```
+
+- 기본적으로 빈 컴포넌트로 여는태그와 닫는 태그 사이에 있는 내용을 반환합니다.
