@@ -1,4 +1,6 @@
-## Effects, Reducers & Context
+# Effects, Reducers & Context
+
+## Effects
 
 ### step1. What is an "Effect"(Side Effect)
 
@@ -334,3 +336,103 @@ useEffect(() => {
 
 useState: 간단한 state / state의 업데이트가 쉽고 state가 몇종류 안되는 경우
 useReducer: 복잡한 로직을 통해 state를 업데이트해야하는경우, 연관된 state 조각을 다루는 경우
+
+## Context API
+
+> 리액트에는 내장된 내부 state 저장소가 있습니다.이를 react context라고 합니다.
+
+- Props가 많은 컴포넌트를 통해 많은 데이터를 전달하는 경우 예기치 못한 문제를 방지할 수 있습니다.
+
+### step1
+
+1. context 파일 만들기
+   components > store > auth-context.js
+
+- AuthContext로 파일명을 만들 수도 있지만 이경우 컴포넌트를 저장한다는 의미가 크기에 케밥케이스로 작성해줍니다.
+
+`auath-context.js`
+
+```js
+import React from 'react'
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+})
+```
+
+- AuthContext자체가 컴포넌트는 아니지만 컴포넌트를 포함할 객체이기 때문에 카멜케이스로 작성해줍니다.
+
+1. 컨텍스트를 사용하려면 두가지 작업이 필요합니다.
+
+**첫번째: 컴포넌트를 공급**
+
+- 접근 권한부여
+- 공급한다는 것은 JSX코드로 감싼다는 이야기입니다.
+  (컨텍스트를 사용하는 컴포넌트의 태그를 JSX로 랩핑)
+- `<AuthContext.Provider>`로 감싼 하위 컴포넌트 모두 context API사용이 가능합니다.
+
+ex) MainHeader, Login컴포넌트에서 context API가 필요한 경우
+
+```jsx
+import AuthContext from './components/store/auth-context'
+
+return (
+  <AuthContext.Provider
+    value={{
+      isLoggedIn: isLoggedIn,
+    }}
+  >
+    <MainHeader /*isAuthenticated={isLoggedIn}더이상필요하지 않음*/
+      onLogout={logoutHandler}
+    />
+    <main>
+      {!isLoggedIn && <Login onLogin={loginHandler} />}
+      {isLoggedIn && <Home onLogout={logoutHandler} />}
+    </main>
+  </AuthContext.Provider>
+)
+```
+
+- `AuthContext` 그 자체로는 컴포넌트가 아니기에 react의 Provider속성을 이용합니다.
+- `value={}`라는 프롭을 가져야합니다.
+
+**두번째 hook을 연결하고 관찰해야합니다.**
+
+- listening의 경우 custom 또는 react hook을 이용해 할 수 있습니다.
+
+  1. react hook 이용
+
+```jsx
+<AuthContext.Consumer>
+  {(ctx) => {
+    return (
+      <nav className={classes.nav}>
+        <ul>
+          {props.isLoggedIn && (
+            <li>
+              <a href="/">Users</a>
+            </li>
+          )}
+          {props.isLoggedIn && (
+            <li>
+              <a href="/">Admin</a>
+            </li>
+          )}
+          {props.isLoggedIn && (
+            <li>
+              <button onClick={props.onLogout}>Logout</button>
+            </li>
+          )}
+        </ul>
+      </nav>
+    )
+  }}
+</AuthContext.Consumer>
+```
+
+- <AuthContext.Consumer>태그로 한번 감싸준 후 그 안에서 `{(cxt) => { retrun }}` 함수를 호출합니다.
+- return 되는 값에 감싼 태그를 넣어줍니다.
+- isLoggedIn의props를 cxt로 변경해줍니다.
+
+✅공부필요부분
+export default가 있는 경우 Provider은 필요없습니다.
