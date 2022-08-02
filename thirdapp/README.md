@@ -434,5 +434,26 @@ return (
 - return 되는 값에 감싼 태그를 넣어줍니다.
 - isLoggedIn의props를 cxt로 변경해줍니다.
 
-✅공부필요부분
-export default가 있는 경우 Provider은 필요없습니다.
+### step2 useContext훅으로 tapping하기
+
+- 리액트에 내장된 useContext 훅을 사용하면 다른 컨텍스트를 사용할 수 있습니다.
+
+```jsx
+import React, { useContext } from 'react'
+
+const Navigation = (props) => {
+  const ctx = useContext(AuthContext)
+
+  return (
+    <nav className={classes.nav}>
+      <ul>
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Users</a>
+          </li>
+        )}
+    ...
+  )
+```
+
+- `<AuthContext.Consumer>태그로 한번 감싸준 후 그 안에서`{(cxt) => { retrun }}` 함수를 호출`했던 과정을 줄여줍니다.
