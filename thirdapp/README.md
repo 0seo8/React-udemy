@@ -457,3 +457,17 @@ const Navigation = (props) => {
 ```
 
 - `<AuthContext.Consumer>태그로 한번 감싸준 후 그 안에서`{(cxt) => { retrun }}` 함수를 호출`했던 과정을 줄여줍니다.
+
+### step3 context API를 동적을 만들기
+
+```jsx
+  <AuthContext.Provider
+    value={{
+      isLoggedIn: isLoggedIn,
+      onLogout: logoutHandler
+    }}
+  >
+```
+
+- isLoggedIn외에도 onLogout핸들러함수를 보내줄 수도 있습니다.
+- 문자열이나 객체 등의 값을 전달할 수는 없지만 함수를 전달할 수는 있습니다.
