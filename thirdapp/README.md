@@ -538,7 +538,7 @@ context api는 모든 것에서 사용할 수 있을까?
 - 하지만 컴포넌트 구성을 대체할 수는 없기에 구성은 props를 사용하는 것이 좋습니다.(ex) Button)
 - 또한 변경이 은 경우 react context는 적합하지 않습니다.
 
-> # Hooks 규칙
+> > ## Hooks 규칙
 
 1. 리액트 cumstom hook 또는 react 컴포넌트 함수에서만 호출해야합니다.
 2. 최상위 수준에서만 호출해야합니다.
@@ -547,3 +547,30 @@ context api는 모든 것에서 사용할 수 있을까?
 - 중첩함수에서 호출할 수 없습니다.
 
 3. useEffect의 경우 참조하는 모든 항목을 uesEffect내부에 포함해야합니다.
+
+### step6 Input컴포넌트
+
+### step7 Forward Refs
+
+- useRef를 이용한 유효하지 않은 input에 포커스하기
+
+```jsx
+  const inputRef = useRef()
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
+  <label htmlFor="password">Password</label>
+  <Input
+    label="password"
+    type="password"
+    id="password"
+    isValid={passwordValid}
+    value={passwordState.value}
+    onChange={passwordChangeHandler}
+    onBlur={validatePasswordHandler}
+  />
+```
+
+위 케이스의 경우 inputRef.current.focus()는 id와 password 중 마지막으로 포커스가 유지되는 password에 포커스를 합니다. 우리가 구현하고자 하는 목표는 아닙니다.
