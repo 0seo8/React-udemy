@@ -471,3 +471,60 @@ const Navigation = (props) => {
 
 - isLoggedIn외에도 onLogout핸들러함수를 보내줄 수도 있습니다.
 - 문자열이나 객체 등의 값을 전달할 수는 없지만 함수를 전달할 수는 있습니다.
+
+### stpe4 사용자 정의 컨텍스트 제공자 구성요소 및 빌드 사용
+
+```jsx
+import React from 'react'
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+  onLogout: () => {},
+})
+
+export const AuthContextProvider = (props) => {
+  return <AuthContext.Provider>{props.children}</AuthContext.Provider>
+}
+
+export default AuthContext
+```
+
+위와 같이 함수를 정의하는 경우 useState를 가져와 사용할 수 있습니다.
+
+```jsx
+import React, { useState } from 'react'
+
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+  onLogout: () => {},
+  onLogin: (email, password) => {},
+})
+
+export const AuthContextProvider = (props) => {
+  const { isLoggedIn, setIsLoggedIn } = useState(false)
+
+  const logoutHandler = () => {
+    setIsLoggedIn(false)
+  }
+
+  const loginHandler = () => {
+    setIsLoggedIn(true)
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+        onLogout: logoutHandler,
+        onLogIn: loginHandler,
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  )
+}
+
+export default AuthContext
+```
+
+- 중앙집중적인 접근방식으로 프로젝트를 변경할 수 있습니다.
