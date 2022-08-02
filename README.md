@@ -13,4 +13,4 @@ https://github.com/0seo8/React-udemy/blob/main/first/README.md
 
 ## 3. Effects, Reducers & Context
 
-https://github.com/0seo8/React-udemy/blob/main/secondapp/README.md
+https://github.com/0seo8/React-udemy/tree/main/thirdapp
