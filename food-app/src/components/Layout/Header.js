@@ -1,7 +1,7 @@
-import React from 'react'
 import HeaderCardButton from './HeaderCardButton'
 import mealsImage from '../../assets/meals.jpg'
 import classes from './Header.module.css'
+
 function Header(props) {
   return (
     <>
