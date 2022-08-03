@@ -13,3 +13,44 @@
 
 1-1. API란?
 어플리케이션 프로그래밍 인터페이스
+
+1-2 프로미스 처리
+`then을 이용한 프로미스 처리`
+
+```jsx
+function fetchMoviesHandler() {
+  fetch('https://swapi.dev/api/films/')
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      const transformMovies = data.results.map((movieData) => {
+        return {
+          id: movieData.episode_id,
+          title: movieData.title,
+          openingText: movieData.opening_crawl,
+          releasData: movieData.release_date,
+        }
+      })
+      setMovies(transformMovies)
+    })
+}
+```
+
+`async await이용`
+
+```jsx
+async function fetchMoviesHandler() {
+  const response = await fetch('https://swapi.dev/api/films/')
+  const data = response.json()
+  const transformMovies = data.results.map((movieData) => {
+    return {
+      id: movieData.episode_id,
+      title: movieData.title,
+      openingText: movieData.opening_crawl,
+      releasData: movieData.release_date,
+    }
+  })
+  setMovies(transformMovies)
+}
+```
