@@ -3,7 +3,7 @@ import Input from '../../UI/Input'
 import classes from './MealItemForm.module.css'
 
 function MealItemForm(props) {
-  const [amountIsValid, setAountIsValid] = useState(true)
+  const [amountIsValid, setAmountIsValid] = useState(true)
   const amountInputRef = useRef()
 
   const submitHandler = (e) => {
@@ -16,7 +16,7 @@ function MealItemForm(props) {
       enteredAmountNumber < 1 ||
       enteredAmountNumber > 5
     ) {
-      setAountIsValid(false)
+      setAmountIsValid(false)
       return
     }
 
