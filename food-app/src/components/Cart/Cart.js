@@ -1,9 +1,10 @@
 import React from 'react'
+import Modal from '../UI/Modal'
 import classes from './Cart.module.css'
 
-function Card() {
+function Cart() {
   const cartItems = (
-    <ul className={classes['cart=items']}>
+    <ul className={classes['cart-items']}>
       {[
         {
           id: 'c1',
@@ -18,9 +19,9 @@ function Card() {
   )
 
   return (
-    <div>
+    <Modal>
       {cartItems}
-      <div calssName={classes.total}>
+      <div className={classes.total}>
         <span>Total Amount</span>
         <span>35.62</span>
       </div>
@@ -28,8 +29,8 @@ function Card() {
         <button className={classes['button--alt']}>Close</button>
         <button className={classes.button}>Order</button>
       </div>
-    </div>
+    </Modal>
   )
 }
 
-export default Card
+export default Cart
