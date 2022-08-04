@@ -460,6 +460,7 @@ const Navigation = (props) => {
 
 ### step3 context API를 동적을 만들기
 
+`사용하는 쪽`
 ```jsx
   <AuthContext.Provider
     value={{
@@ -472,25 +473,36 @@ const Navigation = (props) => {
 - isLoggedIn외에도 onLogout핸들러함수를 보내줄 수도 있습니다.
 - 문자열이나 객체 등의 값을 전달할 수는 없지만 함수를 전달할 수는 있습니다.
 
-### stpe4 사용자 정의 컨텍스트 제공자 구성요소 및 빌드 사용
-
+`auth-context`
 ```jsx
-import React from 'react'
-
 const AuthContext = React.createContext({
   isLoggedIn: false,
   onLogout: () => {},
 })
+```
+- 위와 같이 빈 함수를 넣어주면 IDE를 조금 더 편하게 사용을 수 있습니다.
 
+### stpe4 사용자 정의 컨텍스트 제공자 구성요소 및 빌드 사용
+
+만약, `auth-context`에 더 많은 로직을 가져와 사용을 하고 싶은 경우에는 어떻게 해야할까요?
+즉, 별도의 컨텍스트 관리 컴포넌트를 만들고싶은 경우에는 어떻게 해야할까요?
+
+이런 경우 `auth-context`파일 내에서 `AuthContextProvider`라는 하나의 컴포넌트를 만들 수 있습니다.
+
+`auth-context`
+```jsx
+...
 export const AuthContextProvider = (props) => {
   return <AuthContext.Provider>{props.children}</AuthContext.Provider>
 }
 
 export default AuthContext
 ```
+위와 같이 props를 받아와 들어온 모든 것을 전달할 수 있습니다. 또한 AuthContext뿐만 아니라 AuthContextProvider도 내보내줍니다.
 
-위와 같이 함수를 정의하는 경우 useState를 가져와 사용할 수 있습니다.
+이렇게 props를 받는 하나의 컴포넌트를 만들어준다면 App.js에서 만든 긴 코드를 App.js에서 분리를 해 사용을 할 수 있습니다. 이렇게 프로젝트를 중앙집중적인 접근방식으로 변경할 수 있습니다.
 
+`auth-context`
 ```jsx
 import React, { useState } from 'react'
 
@@ -501,6 +513,7 @@ const AuthContext = React.createContext({
 })
 
 export const AuthContextProvider = (props) => {
+//App.js에서 사용하던 로직을 가져옵니다.
   const { isLoggedIn, setIsLoggedIn } = useState(false)
 
   const logoutHandler = () => {
@@ -526,8 +539,6 @@ export const AuthContextProvider = (props) => {
 
 export default AuthContext
 ```
-
-- 중앙집중적인 접근방식으로 프로젝트를 변경할 수 있습니다.
 
 ### step5
 
