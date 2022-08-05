@@ -70,4 +70,4 @@ react-route-dom의 Link , NavLink
 - `new URLSeartchParams`: 브라우저 내장함수
   - `const queryParams = new URLSEarchParams(location.search)` 쿼리매개변수를 추출합니다.
 
-## 헿.....라우터 포기, 나중에 이어서.
+## 헿.....라우터 포기, 나중에 이어서
