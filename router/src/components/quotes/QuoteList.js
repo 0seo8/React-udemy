@@ -1,11 +1,17 @@
-import { Fragment } from 'react';
+import { Fragment } from 'react'
 
-import QuoteItem from './QuoteItem';
-import classes from './QuoteList.module.css';
+import QuoteItem from './QuoteItem'
+import classes from './QuoteList.module.css'
 
 const QuoteList = (props) => {
+  const changeSoringHandler = (a, b) => {
+    return props.quotes((a, (b) => a - b))
+  }
   return (
     <Fragment>
+      <div className={StyleSheet.sorting}>
+        <button onClikc={changeSoringHandler}> Sort ASD</button>
+      </div>
       <ul className={classes.list}>
         {props.quotes.map((quote) => (
           <QuoteItem
@@ -17,7 +23,7 @@ const QuoteList = (props) => {
         ))}
       </ul>
     </Fragment>
-  );
-};
+  )
+}
 
-export default QuoteList;
+export default QuoteList
