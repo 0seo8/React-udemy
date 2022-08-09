@@ -588,3 +588,44 @@ const increaseHandler = () => {
   dispatch(counterActions.increase(10))
 }
 ```
+
+# Redux 실습
+
+## 1. count 외 auth 전역 등록
+
+```jsx
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: initialCountState,
+  reducers: {
+    increment(state) {
+      state.count++
+    },
+...
+  },
+})
+
+const authSlice = createSlice({
+  name: 'authentication',
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true
+    },
+...
+  }
+})
+```
+
+각각 다른 slice를 만든 후 아래와 같이 등록을 해줍니다.
+
+```jsx
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reuducer,
+  },
+})
+```
+
+## 2. 등록된 slice 사용
