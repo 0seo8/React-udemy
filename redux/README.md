@@ -12,7 +12,7 @@
 
 ### 2-1. local state
 
-- 데이터가 벼견되어서 하나의 컴포넌트에 속하는 UI(ex) input창, togggle 버튼)
+- 데이터가 변경이 하나의 컴포넌트에 속하는 UI(ex) input창, togggle 버튼)
 - `useState`로 관리를 하며 복잡한 로직이나 상태가 동시에 변경되는 위험성을 가지고 있는 경우 `useReducer`를 사용할 수 있다.
 
 ### 2-2. Cross-Component state
@@ -191,12 +191,6 @@ root.render(
 ```
 
 ### 실습 4 리액트 컴포넌트에서 리덕스 데이터 사용하기
-
-`Counter.js`
-
-```js
-
-```
 
 - useStore 훅을 사용할수도 있지만, 스토어에 바로 접근 할 수 있는 useSelector가 더 편합니다.
 - useStore은 자동으로 서브스크립션을 설정하고, 상태의 **일부**를 선택하게 해줍니다.
@@ -417,3 +411,180 @@ return(
 즉, reducer에서 반환하는 객체는 중요하지 않지만, 중요한 것은 기존 state와 병합되지 않고 기존 state를 덮어쓴다는 것입니다.
 
 **절대 기존 state를 변경해서는 안됩니다!** 대신에 새로운 state 객체를 반환하여 항상 재정의합니다.
+
+---
+
+# 리덕스 툴킷
+
+## 1. 리덕스를 사용하면 생길 수 있는 문제.
+
+```jsx
+import {createStore} from 'redux'
+
+const counterReducer = (state=initialState, action) {
+  if(action.type === 'increment') {
+    return {
+      counter: state.counter + 1,
+      showCounter: state.showCounter,
+    }
+  }
+  ...
+}
+```
+
+### 문제 1. action type에서 발생하는 문제
+
+- action type에서 오타가 생기는 경우 reducer가 처리를 하지 못합니다.
+- 프로젝트의 규모가 커지는 경우, action type의 식별자가 겹치는 경우 충돌을 발생시킬 수 있습니다.
+
+**-> 해결: const를 사용하라.**
+
+```jsx
+import {createStore} from 'redux'
+
+export const INCREMENT = 'increment'
+
+const counterReducer = (state=initialState, action) {
+  if(action.type === INCREMENT ) {
+    return {
+      counter: state.counter + 1,
+      showCounter: state.showCounter,
+    }
+  }
+  ...
+}
+```
+
+`사용`
+
+```jsx
+import { INCREMENT } from '../store/index'
+
+const incrementHandler = () => {
+  dispatch({ tpye: INCREMENT })
+}
+```
+
+### 문제 2. reducer의 상태관리
+
+- 프로젝트의 규모가 커지고, 관리하는 state가 많아지는 경우 리덕스의 크기가 점차 커지고 관리하기가 어려워집니다.
+
+### 문제 3. 상태변경의 불변성
+
+- return 시 항상 새로운 상태의 스냅샷을 반환해야합니다.(state 원본 변경 불가)
+- 중접된 객체 및 배열에서 의도치 않은 상태 변경이 생길 수 있습니다.
+
+하지만 리덕스 툴킷을 사용하면, 이런 작업 없이 더 편리하고 쉽게 리덕스를 사용할 수 있습니다.
+
+## 리덕스 툴킷 사용하기
+
+### 1. 리덕스 툴킷 **세팅**
+
+```
+$ npm install @reduxjs/toolkit
+$ yarn add @reduxjs/**toolkit**
+```
+
+리덕스 툴킷 안에는 redux가 포함되어 있기 때문에 기존에 설치를 했던 리덕스는 삭제를 해줘야합니다.
+
+### 2. createSlice
+
+`store>index.js`
+
+```js
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = { count: 0, showCounter: true }
+
+createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment(state) {
+      state.count++
+    },
+    decrement(state) {
+      state.count--
+    },
+    increase(state, action) {
+      state.count = state.count + action.amount
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter
+    },
+  },
+})
+```
+
+- **리덕스 툴킷과 createSlice함수를 이용하면 기존의 상태값을 바꾸지 않을 수 있습니다.**-
+- `@reduxjs/toolkit`에서 `createSlice`를 가져옵니다. `createReducer`을 가져올 수도 있지만, `createSlice`의 사용이 더 강력합니다.
+- 각각의 action.type에 해당하는 리듀서를 구별해놓고 각각의 리듀서에 해당하는 함수를 호출해 사용을 합니다.
+
+### 3. 리덕스툴킷, slice연결하기
+
+```js
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = { count: 0, showCounter: true }
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment() {},
+    decrement() {},
+    increase() {},
+    toggleCounter() {},
+  },
+})
+
+const store = createStore(counterSlice.reducer)
+
+export default store
+```
+
+`const store = createStore(counterSlice.reducer)`와 같이 store에 `counterSlice`의 `reducers`를 등록해줍니다.
+
+**configStore**
+
+- configStore을 이용하면 여러개의 리듀서를 하나의 리듀서로 합쳐 사용을 할 수 있습니다.
+
+`slice가 하나인 경우`
+
+```jsx
+const store = configureStore({
+  reducer: counterSlice.reducer,
+})
+```
+
+`slice가 여러개인 경우`
+
+```jsx
+const store = configureStore({
+  reducer: { counter: counterSlice.reducer },
+})
+```
+
+### 4. 리듀서툴킷을 이용한 마이그네이션
+
+```jsx
+export const counterActions = counterSlice.actions
+
+export default store
+```
+
+store 뿐만 아니라 actions들도 내보냅니다.
+
+`사용`
+
+```jsx
+import { counterActions } from '../store/index'
+
+const incrementHandler = () => {
+  dispatch(counterActions.increment())
+}
+
+const increaseHandler = () => {
+  dispatch(counterActions.increase(10))
+}
+```
