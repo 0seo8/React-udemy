@@ -18,7 +18,23 @@ $ yarn add react-redux
 
 `index.js`, `ui-slice.js`, `cart-slice.js` 생성
 
-### 3. ui-slice.js
+### 3. store적용
+
+`루트 경로 indxe.js`
+
+```jsx
+import { Provider } from 'react-redux'
+import store from './store/index'
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+)
+```
+
+### 4. ui-slice.js 작성
 
 - 장바구니 버튼 클릭시 your shopping cart 카드 보였다 안보였다 하기.
 
@@ -55,23 +71,7 @@ const store = configureStore({
 export default store
 ```
 
-### 4. store적용
-
-`루트 경로 indxe.js`
-
-```jsx
-import { Provider } from 'react-redux'
-import store from './store/index'
-
-const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-)
-```
-
-### 5. 사용
+### 5. ui-slice.js 사용
 
 `CartButton.js`
 
@@ -108,3 +108,5 @@ return (
   </Layout>
 )
 ```
+
+### 6.
