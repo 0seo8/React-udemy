@@ -33,6 +33,10 @@ const Ingredients = () => {
       })
   }, [])
 
+  useEffect(() => {
+    console.log('RENDERING', userIngredients)
+  }, [userIngredients])
+
   const addIngredientHandler = (ingredient: ingredient) => {
     // axios('https://react-hooks-update-9a96f-default-rtdb.firebaseio.com/ingredients.json', {
     //   method:'post',
