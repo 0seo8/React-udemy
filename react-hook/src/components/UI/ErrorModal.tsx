@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import './ErrorModal.css';
+import './ErrorModal.css'
 
-const ErrorModal:React.FC<{
-  children: React.ReactNode; onClose:() => void
-}> = React.memo(props => {
+const ErrorModal: React.FC<{
+  children: React.ReactNode
+  onClose: () => void
+}> = React.memo((props) => {
   return (
     <React.Fragment>
       <div className="backdrop" onClick={props.onClose} />
@@ -18,7 +19,7 @@ const ErrorModal:React.FC<{
         </div>
       </div>
     </React.Fragment>
-  );
-});
+  )
+})
 
-export default ErrorModal;
+export default ErrorModal

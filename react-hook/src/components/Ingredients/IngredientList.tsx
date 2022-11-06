@@ -8,14 +8,14 @@ interface ingredient {
 }
 const IngredientList: React.FC<{
   ingredients: ingredient[]
-  onRemoveItem: () => {}
+  onRemoveItem: (ingredientId: string) => void
 }> = ({ ingredients, onRemoveItem }) => {
   return (
     <section className="ingredient-list">
       <h2>Loaded Ingredients</h2>
       <ul>
         {ingredients.map((ig) => (
-          <li key={ig.id} onClick={onRemoveItem.bind(this, ig.id)}>
+          <li key={ig.id} onClick={() => onRemoveItem(ig.id!)}>
             <span>{ig.title}</span>
             <span>{ig.amount}x</span>
           </li>
