@@ -8,7 +8,7 @@ function App() {
     <TodosContextProvider>
       <NewTodo />
       <Todos />
-    </TodoCo>
+    </TodosContextProvider>
   )
 }
 

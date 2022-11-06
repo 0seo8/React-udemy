@@ -33,22 +33,11 @@ const Ingredients = () => {
       })
   }, [])
 
-  useEffect(() => {
-    console.log('RENDERING', userIngredients)
-  }, [userIngredients])
+  const filteredIngredientsHandler = (filteredIngredients: ingredient[]) => {
+    setUserIngredients(filteredIngredients)
+  }
 
   const addIngredientHandler = (ingredient: ingredient) => {
-    // axios('https://react-hooks-update-9a96f-default-rtdb.firebaseio.com/ingredients.json', {
-    //   method:'post',
-    //   headers: {'Content-Type': 'application/json'},
-    //   data: JSON.stringify(ingredient)
-    // }).then(response => {
-    //   setUserIngredients(prevIngredients => [
-    //     ...prevIngredients,
-    //     { id: response.data.name, ...ingredient}
-    //   ])
-    // })
-
     fetch(
       'https://react-hooks-update-9a96f-default-rtdb.firebaseio.com/ingredients.json',
       {
@@ -72,7 +61,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList ingredients={userIngredients} onRemoveItem={() => {}} />
       </section>
     </div>
